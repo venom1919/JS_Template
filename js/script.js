@@ -101,7 +101,7 @@ window.addEventListener("DOMContentLoaded", ()=>{
     const modalOp = document.querySelector('[data-modal]') ,
           modal = document.querySelector('.modal'); 
           modalClose = document.querySelector('[data-close]'),
-     
+          mForm = document.forms.tsd ;  
 
      modalOp.addEventListener('click', ()=>{
         // modal.classList.add('show'),
