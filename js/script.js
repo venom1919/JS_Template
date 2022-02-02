@@ -40,7 +40,7 @@ window.addEventListener("DOMContentLoaded", ()=>{
         });
    
         
-        const dedline = '2022-02-13'; 
+        const dedline = '2022-02-03'; 
 
         function getDateRemain(endTime){
 
@@ -51,7 +51,6 @@ window.addEventListener("DOMContentLoaded", ()=>{
                   seconds = Math.floor((diff / 1000) % 60) ;
                   
                   
-        
             return{
                 'total':diff,
                 'days':days,
@@ -61,10 +60,58 @@ window.addEventListener("DOMContentLoaded", ()=>{
             };
         }
 
+        function checkNumber(number){
+
+            if(number >=0 && number <10){
+                return `0${number}` ; 
+            }else{
+                return number ;
+            }
+
+           
+        }
+
         function setClock(selector, endTime){
 
-            const timer = document.querySelector(selector);
+            const timer = document.querySelector(selector),
+                  days = document.querySelector('#days') ,
+                  hours = document.querySelector('#hours') ,
+                  minutes = document.querySelector('#minutes') ,
+                  seconds = document.querySelector('#seconds') ,
+                  timeInterval = setInterval(upDateClock, 1000) ;
+        
+            upDateClock() ;
+
+        function upDateClock(){
+            const t = getDateRemain(endTime) ;
+            days.innerHTML = checkNumber(t.days); 
+            hours.innerHTML = checkNumber(t.hours); 
+            minutes.innerHTML = checkNumber(t.minutes);
+            seconds.innerHTML = checkNumber(t.seconds);   
+            
+            if(t.total <=0){
+                clearInterval(timeInterval) ;
+            }
 
         }
+    }
+
+    setClock('.time', dedline);
+    
+    const modalOp = document.querySelector('[data-modal]') ,
+          modal = document.querySelector('.modal'); 
+          modalClose = document.querySelector('[data-close]'),
+     
+
+     modalOp.addEventListener('click', ()=>{
+        // modal.classList.add('show'),
+        modal.show() ;    
+     }); 
+
+     modalClose.addEventListener('click', ()=>{
+        modal.classList.add('hide'),
+        modal.classList.remove('show') ;    
+     }); 
+
 
 });
