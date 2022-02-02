@@ -63,7 +63,7 @@ window.addEventListener("DOMContentLoaded", ()=>{
 
         function setClock(selector, endTime){
 
-            const timer = document.querySelector(selector),
+            const timer = document.querySelector(selector);
 
         }
 
