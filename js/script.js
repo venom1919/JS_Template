@@ -100,7 +100,7 @@ window.addEventListener('DOMContentLoaded', () => {
     });
     
     class Menu {
-        constructor(price, title, src, descr, alt, parentSelector) {
+        constructor(price, title, src, descr, alt, parentSelector, ...classes) {
             this.price = price;
             this.src = src;
             this.title = title;
@@ -108,6 +108,7 @@ window.addEventListener('DOMContentLoaded', () => {
             this.alt = alt;
             this.transfer = 27;
             this.parent = document.querySelector(parentSelector); 
+            this.classes = classes ; 
             this.overPrice();
         }
     
@@ -117,8 +118,13 @@ window.addEventListener('DOMContentLoaded', () => {
     
         render() {
             const newEl = document.createElement('div');
+            if(this.classes.length == 0){
+                this.newEl = "menu__item" ;
+                newEl.classList.add(this.newEl);
+            }   
+
+            this.classes.forEach(classN => newEl.classList.add(classN))
             newEl.innerHTML = `
-                <div class="menu__item">
                     <img src= ${this.src} alt = ${this.alt}>
                     <h3 class = "menu__item-subtitle">${this.title}"</h3>
                         <div class="menu__item-descr">${this.descr}</div>
@@ -126,14 +132,13 @@ window.addEventListener('DOMContentLoaded', () => {
                             <div class="menu__item-price">
                                 <div class="menu__item-cost">Цена:</div>
                                 <div class="menu__item-total"><span>${this.price}</span> грн/день</div>
-                            </div>
-                        </div>`;
+                            </div>`;
     
             this.parent.append(newEl);             
         }
     }
     
-    new Menu(229, 'Меню "Фитнес"', "img/tabs/vegy.jpg", 'Меню "Фитнес" - это новый подход к приготовлению блюд: больше свежих овощей',"vegy", ".menu .container" ).render();  
+    new Menu(229, 'Меню "Фитнес"', "img/tabs/vegy.jpg", 'Меню "Фитнес" - это новый подход к приготовлению блюд: больше свежих овощей',"vegy", ".menu .container", "menu__item", "big" ).render();  
 
 
 });
