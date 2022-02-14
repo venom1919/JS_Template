@@ -139,7 +139,48 @@ window.addEventListener('DOMContentLoaded', () => {
     }
     
     new Menu(229, 'Меню "Фитнес"', "img/tabs/vegy.jpg", 'Меню "Фитнес" - это новый подход к приготовлению блюд: больше свежих овощей',"vegy", ".menu .container", "menu__item", "big" ).render();  
+    
+    //////////////////14-02
+    const forms = document.querySelectorAll("form") ;
+    const mess = {
+       loading:"Загрузка",
+       succes:"Ваша заявка будет в скором времени обработана.Спасибо!",
+       failure:"Произошла ошибка..."
+    };   
 
+    forms.forEach(item =>{
+        postData(item);
+    })
+
+    function postData(form){
+        
+        form.addEventListener("submit", (e)=>{
+            
+            e.preventDefault();
+            const statusMess = document.createElement('div') ;
+            statusMess.classList.add('status'); 
+            statusMess.textContent = mess.loading ;
+            form.append(statusMess);
+            
+            const req = new XMLHttpRequest(); 
+            req.open('POST', "server.php");
+            req.setRequestHeader('Content-type', 'multipart/form-data') ; 
+            const formData = new FormData(form) ; 
+            req.send(formData) ;
+    
+            req.addEventListener('load', ()=>{
+                
+                if(req.status === 200){
+                    statusMess.textContent = mess.succes ;
+                    console.log(req.response) ;
+                }else{
+                    statusMess.textContent = mess.failure ;
+                    
+                }
+                
+            }); 
+        })
+    }
 
 });
 
