@@ -1,0 +1,23 @@
+{
+  "name": "dist",
+  "version": "1.0.0",
+  "main": "data.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/venom1919/jsPractice.git"
+  },
+  "keywords": [],
+  "author": "venom1919",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/venom1919/jsPractice/issues"
+  },
+  "homepage": "https://github.com/venom1919/jsPractice#readme",
+  "description": "desc",
+  "dependencies": {
+    "json-server": "^0.17.0"
+  }
+}
