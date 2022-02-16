@@ -182,5 +182,8 @@ window.addEventListener('DOMContentLoaded', () => {
         })
     }
 
+    fetch('db.json')
+    .then(data => data.json())
+    .then(res => console(res));
 });
 
