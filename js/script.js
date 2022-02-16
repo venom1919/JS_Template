@@ -98,7 +98,7 @@ window.addEventListener('DOMContentLoaded', () => {
     modalClose.addEventListener('click', () => {
         modal.classList.add('hide'), modal.classList.remove('show');
     });
-    
+
     class Menu {
         constructor(price, title, src, descr, alt, parentSelector, ...classes) {
             this.price = price;
@@ -107,21 +107,21 @@ window.addEventListener('DOMContentLoaded', () => {
             this.descr = descr;
             this.alt = alt;
             this.transfer = 27;
-            this.parent = document.querySelector(parentSelector); 
-            this.classes = classes ; 
+            this.parent = document.querySelector(parentSelector);
+            this.classes = classes;
             this.overPrice();
         }
-    
+
         overPrice(price) {
             this.price = this.price * this.transfer;
         }
-    
+
         render() {
             const newEl = document.createElement('div');
-            if(this.classes.length == 0){
-                this.newEl = "menu__item" ;
+            if (this.classes.length == 0) {
+                this.newEl = "menu__item";
                 newEl.classList.add(this.newEl);
-            }   
+            }
 
             this.classes.forEach(classN => newEl.classList.add(classN))
             newEl.innerHTML = `
@@ -133,57 +133,108 @@ window.addEventListener('DOMContentLoaded', () => {
                                 <div class="menu__item-cost">Цена:</div>
                                 <div class="menu__item-total"><span>${this.price}</span> грн/день</div>
                             </div>`;
-    
-            this.parent.append(newEl);             
+
+            this.parent.append(newEl);
         }
     }
-    
-    new Menu(229, 'Меню "Фитнес"', "img/tabs/vegy.jpg", 'Меню "Фитнес" - это новый подход к приготовлению блюд: больше свежих овощей',"vegy", ".menu .container", "menu__item", "big" ).render();  
-    
-    //////////////////14-02
-    const forms = document.querySelectorAll("form") ;
-    const mess = {
-       loading:"Загрузка",
-       succes:"Ваша заявка будет в скором времени обработана.Спасибо!",
-       failure:"Произошла ошибка..."
-    };   
 
-    forms.forEach(item =>{
+    new Menu(229, 'Меню "Фитнес"', "img/tabs/vegy.jpg", 'Меню "Фитнес" - это новый подход к приготовлению блюд: больше свежих овощей', "vegy", ".menu .container", "menu__item", "big").render();
+
+    //////////////////14-02
+    const forms = document.querySelectorAll("form");
+    const mess = {
+        loading: "Загрузка",
+        succes: "Ваша заявка будет в скором времени обработана.Спасибо!",
+        failure: "Произошла ошибка..."
+    };
+
+    forms.forEach(item => {
         postData(item);
     })
 
-    function postData(form){
-        
-        form.addEventListener("submit", (e)=>{
-            
+    function postData(form) {
+
+        form.addEventListener("submit", (e) => {
+
             e.preventDefault();
-            const statusMess = document.createElement('div') ;
-            statusMess.classList.add('status'); 
-            statusMess.textContent = mess.loading ;
+            const statusMess = document.createElement('div');
+            statusMess.classList.add('status');
+            statusMess.textContent = mess.loading;
             form.append(statusMess);
-            
-            const req = new XMLHttpRequest(); 
+
+            const req = new XMLHttpRequest();
             req.open('POST', "server.php");
-            req.setRequestHeader('Content-type', 'multipart/form-data') ; 
-            const formData = new FormData(form) ; 
-            req.send(formData) ;
-    
-            req.addEventListener('load', ()=>{
-                
-                if(req.status === 200){
-                    statusMess.textContent = mess.succes ;
-                    console.log(req.response) ;
-                }else{
-                    statusMess.textContent = mess.failure ;
-                    
+            req.setRequestHeader('Content-type', 'multipart/form-data');
+            const formData = new FormData(form);
+            req.send(formData);
+
+            req.addEventListener('load', () => {
+
+                if (req.status === 200) {
+                    statusMess.textContent = mess.succes;
+                    console.log(req.response);
+                } else {
+                    statusMess.textContent = mess.failure;
+
                 }
-                
-            }); 
+
+            });
         })
     }
 
     fetch('db.json')
-    .then(data => data.json())
-    .then(res => console(res));
+        .then(data => data.json())
+        .then(res => console(res));
+
+
+     ////slider           
+     const sumSlider = document.querySelectorAll(".offer__slide"),
+        slider_next = document.querySelector(".offer__slider-next"),
+        slider_prev =  document.querySelector(".offer__slider-prev"),
+        total = document.querySelector('#total'),
+        current = document.querySelector('#current');
+
+    let slideIndex = 1 ;
+    showSlider(slideIndex) ;   
+    slider_next.addEventListener("click", () => {
+        lassSlides(1) ;
+    });
+
+    slider_prev.addEventListener('click', ()=>{
+        lassSlides(-1) ;
+    });
+
+    if(sumSlider.length< 10 ){
+        total.textContent = `0${sumSlider.length}`; 
+    } else{
+        total.textContent = sumSlider.length; 
+    }
+
+    function showSlider(e) {
+                
+        if (e > sumSlider.length){
+           slideIndex = 1 ;   
+        }
+
+        if(e < 1){
+            slideIndex = sumSlider.length ;  
+        } 
+
+        sumSlider.forEach(item => item.style.display = 'none') ;
+        sumSlider[slideIndex -1].style.display = 'block'; 
+        
+        if(sumSlider.length < 10){ 
+            current.textContent = `0${slideIndex}`; 
+        }else{
+            current.textContent = sumSlider.length ;
+        }
+    }
+
+    function lassSlides(n){
+        showSlider(slideIndex +=n) ;
+    }
+
 });
+
+
 
