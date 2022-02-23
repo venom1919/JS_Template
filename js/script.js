@@ -85,19 +85,30 @@ window.addEventListener('DOMContentLoaded', () => {
 
     setClock('.time', dedline);
 
-    const modalOp = document.querySelector('[data-modal]'),
-        modal = document.querySelector('.modal');
-    (modalClose = document.querySelector('[data-close]')),
-        (mForm = document.forms.tsd);
+    // const modalOp = document.querySelector('[data-modal]'),
+    //     modal = document.querySelector('.modal');
+    // (modalClose = document.querySelector('[data-close]')),
+    //     (mForm = document.forms.tsd);
 
-    modalOp.addEventListener('click', () => {
-        // modal.classList.add('show'),
-        modal.show();
+    // modalOp.addEventListener('click', () => {
+    //     // modal.classList.add('show'),
+    //     modal.show();
+    // });
+
+    // modalClose.addEventListener('click', () => {
+    //     modal.classList.add('hide'), modal.classList.remove('show');
+    // });
+
+
+
+    const tsdModal = document.querySelector('.tsd');
+    const but = document.querySelector('.btn_dark');
+
+    but.addEventListener('click', () => {
+        tsdModal.classList.add('hide');
+        // tsdModal.show() ; 
     });
 
-    modalClose.addEventListener('click', () => {
-        modal.classList.add('hide'), modal.classList.remove('show');
-    });
 
     class Menu {
         constructor(price, title, src, descr, alt, parentSelector, ...classes) {
@@ -182,56 +193,109 @@ window.addEventListener('DOMContentLoaded', () => {
         })
     }
 
-    fetch('db.json')
-        .then(data => data.json())
-        .then(res => console(res));
+    // fetch('db.json')
+    //     .then(data => data.json())
+    //     .then(res => console(res));
 
 
-     ////slider           
-     const sumSlider = document.querySelectorAll(".offer__slide"),
+    ////slider           
+    const sumSlider = document.querySelectorAll(".offer__slide"),
         slider_next = document.querySelector(".offer__slider-next"),
-        slider_prev =  document.querySelector(".offer__slider-prev"),
+        slider_prev = document.querySelector(".offer__slider-prev"),
         total = document.querySelector('#total'),
-        current = document.querySelector('#current');
+        current = document.querySelector('#current'),
+        slider = document.querySelector(".offer__slider");
 
-    let slideIndex = 1 ;
-    showSlider(slideIndex) ;   
+
+
+    let slideIndex = 1;
+    showSlider(slideIndex);
     slider_next.addEventListener("click", () => {
-        lassSlides(1) ;
+        lassSlides(1);
     });
 
-    slider_prev.addEventListener('click', ()=>{
-        lassSlides(-1) ;
+    slider_prev.addEventListener('click', () => {
+        lassSlides(-1);
     });
 
-    if(sumSlider.length< 10 ){
-        total.textContent = `0${sumSlider.length}`; 
-    } else{
-        total.textContent = sumSlider.length; 
+    if (sumSlider.length < 10) {
+        total.textContent = `0${sumSlider.length}`;
+    } else {
+        total.textContent = sumSlider.length;
     }
 
     function showSlider(e) {
+
+        if (e > sumSlider.length) {
+            slideIndex = 1;
+        }
+
+        if (e < 1) {
+            slideIndex = sumSlider.length;
+        }
+
+        slider.style.postion = 'relative';
+        const indicators = document.createElement('ol'),
+              dots = [] ;
+
+        indicators.classList.add('carousel-indicators');
+        indicators.style.cssText = `
+            
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 15;
+            display: flex;
+            justify-content: center;
+            margin-right: 15%;
+            margin-left: 15%;
+            list-style: none;
                 
-        if (e > sumSlider.length){
-           slideIndex = 1 ;   
+        `;
+
+        slider.append(indicators) ;
+
+        for(let it = 0; it < sumSlider.length; it++){
+            const dot = document.createElement('li');                
+            dot.setAttribute('data-slide-to', it+1);
+            dot.style.cssText = ` 
+                box-sizing: content-box;
+                flex: 0 1 auto;
+                width: 30px;
+                height: 6px;
+                margin-right: 3px;
+                margin-left: 3px;
+                cursor: pointer;
+                background-color: #fff;
+                background-clip: padding-box;
+                border-top: 10px solid transparent;
+                border-bottom: 10px solid transparent;
+                opacity: .5;
+                transition: opacity .6s ease;`;  
+
+                if(i == 0){
+                    dot.style.opacity= 1 ; 
+                }
+
+            indicators.append(dot) ;
+            dots.push(dot) ;
+
         }
 
-        if(e < 1){
-            slideIndex = sumSlider.length ;  
-        } 
+        sumSlider.forEach(item => item.style.display = 'none');
+        sumSlider[slideIndex - 1].style.display = 'block';
 
-        sumSlider.forEach(item => item.style.display = 'none') ;
-        sumSlider[slideIndex -1].style.display = 'block'; 
-        
-        if(sumSlider.length < 10){ 
-            current.textContent = `0${slideIndex}`; 
-        }else{
-            current.textContent = sumSlider.length ;
+        if (sumSlider.length < 10) {
+            current.textContent = `0${slideIndex}`;
+        } else {
+            current.textContent = sumSlider.length;
         }
+
     }
 
-    function lassSlides(n){
-        showSlider(slideIndex +=n) ;
+    function lassSlides(n) {
+        showSlider(slideIndex += n);
     }
 
 });
